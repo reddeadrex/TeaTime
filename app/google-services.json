@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "637885610271",
+    "firebase_url": "https://teatime-f8f8c.firebaseio.com",
+    "project_id": "teatime-f8f8c",
+    "storage_bucket": "teatime-f8f8c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637885610271:android:ca79867d44aebe56",
+        "android_client_info": {
+          "package_name": "com.example.albert.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "637885610271-ck768u8qi13p9if84giji0k2d4p94707.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.albert.test",
+            "certificate_hash": "e16b2a65e90ae2af2709f86e973cfbbf24f378c7"
+          }
+        },
+        {
+          "client_id": "637885610271-79nit86rma0t1jiuljh1aokt2jr4kju5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5sAhv6XnLFLshAL2im_5BBKypUhtafhc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "637885610271-79nit86rma0t1jiuljh1aokt2jr4kju5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

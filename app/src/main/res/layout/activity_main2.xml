@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.albert.Main2Activity">
+
+    <ListView
+        android:id="@+id/tea_time"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+    </ListView>
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_horizontal"
+    android:layout_alignParentBottom="true"
+    android:weightSum="1">
+
+    <Button
+        android:id="@+id/add_tea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Tea"
+        android:layout_weight="0.5" />
+
+</LinearLayout>
+</LinearLayout>
