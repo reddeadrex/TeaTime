@@ -84,7 +84,9 @@ public class EditTea extends AppCompatActivity {
         mFirebaseDatabase.child("teas").child(userId).child(position).child("name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mTeaName.setText(dataSnapshot.getValue().toString());
+                if(!dataSnapshot.exists()){}
+                else
+                    mTeaName.setText(dataSnapshot.getValue().toString());
                 //Toast.makeText(getBaseContext(), "Name", Toast.LENGTH_SHORT).show();
             }
 
@@ -96,7 +98,9 @@ public class EditTea extends AppCompatActivity {
         mFirebaseDatabase.child("teas").child(userId).child(position).child("detail").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mTeaDes.setText(dataSnapshot.getValue().toString());
+                if(!dataSnapshot.exists()){}
+                else
+                    mTeaDes.setText(dataSnapshot.getValue().toString());
                 //Toast.makeText(getBaseContext(), "Detail", Toast.LENGTH_SHORT).show();
             }
 

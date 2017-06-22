@@ -1,8 +1,10 @@
 package com.example.albert;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -40,7 +42,6 @@ public class Main2Activity extends AppCompatActivity {
 
     private ListView tTimeView;
     private TeaAdapter adapter;
-    private List<Tea> listTea;
 
     private String userId;
     private int numTea;
@@ -62,6 +63,7 @@ public class Main2Activity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+
         mAddTea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,15 +82,41 @@ public class Main2Activity extends AppCompatActivity {
 
         tTimeView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(Main2Activity.this);
+                alert.setTitle("Delete?");
+                alert.setMessage("Are you sure you want to delete?");
+                alert.setNegativeButton("Cancel", null);
+                alert.setPositiveButton("Yes", new AlertDialog.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int which){
+                        mFirebaseDatabase.child("teas").child(userId).child(""+(position+1)).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.hasChildren())
+                                {
+                                    dataSnapshot.getRef().removeValue();
+                                    adapter.deleteTea(position);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                        adapter.notifyDataSetChanged();
+                        printTea();
+                    }
+                });
+                alert.show();
 //                Toast.makeText(getBaseContext(), "delete1 " + numTea, Toast.LENGTH_SHORT).show();
-                numTea--;
+                //numTea--;
 //                Toast.makeText(getBaseContext(), "delete2 " + numTea, Toast.LENGTH_SHORT).show();
-                listTea.remove(position);
+                //adapter.deleteTea(position, userId);
 //                Toast.makeText(getBaseContext(), "delete3 " + numTea, Toast.LENGTH_SHORT).show();
-                Main2Activity.this.adapter.notifyDataSetChanged();
+                //Main2Activity.this.adapter.notifyDataSetChanged();
 //                Toast.makeText(getBaseContext(), "delete4 " + numTea, Toast.LENGTH_SHORT).show();
-                mFirebaseDatabase.child("teas").child(userId).child(""+(position+1)).setValue(null);
+                //mFirebaseDatabase.child("teas").child(userId).child(""+(position+1)).setValue(null);
 //                Toast.makeText(getBaseContext(), "delete5 " + numTea, Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -108,12 +136,18 @@ public class Main2Activity extends AppCompatActivity {
     {
         mFirebaseDatabase.child("teas").child(userId).addValueEventListener(new ValueEventListener() {
             public void onDataChange(DataSnapshot dataSnapshot) {
-                listTea = new ArrayList<>();
                 numTea = (int)(dataSnapshot.getChildrenCount());
 //                Toast.makeText(getBaseContext(), "real " + numTea, Toast.LENGTH_SHORT).show();
                 if(numTea == 0){}
                 else {
-                    for (int i = 1; i <= numTea; i++) {
+                    final List<Tea> listTea = new ArrayList<>();
+                    int size = numTea;
+                    for (int i = 1; i <= size; i++) {
+                        if(!dataSnapshot.child(""+i).exists())
+                        {
+                            ++size;
+                            ++i;
+                        }
                         mFirebaseDatabase.child("teas").child(userId).child("" + i).child("name").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -127,8 +161,8 @@ public class Main2Activity extends AppCompatActivity {
                             public void onCancelled(DatabaseError databaseError) {
                             }
                         });
-                    }
 
+                    }
                 }
             }
             public void onCancelled(DatabaseError databaseError) { }
@@ -171,9 +205,10 @@ public class Main2Activity extends AppCompatActivity {
             teaName.setName(name);
             teaName.setDetail(detail);
         }
-        mFirebaseDatabase.child("teas").child(userId).child("" + ++numTea).setValue(teaName);
+        mFirebaseDatabase.child("teas").child(userId).child("" + (numTea+1)).setValue(teaName);
 //        Toast.makeText(getBaseContext(), "new " + numTea, Toast.LENGTH_SHORT).show();
 
-        Main2Activity.this.listTea.add(teaName);
+        adapter.addTea(teaName);
+        tTimeView.setAdapter(adapter);
     }
 }
